@@ -1,42 +1,125 @@
 import React, { forwardRef } from 'react';
 import { motion } from 'framer-motion';
 import milkMochaHug from '@/assets/milk-mocha-hug.png';
+import DiaryDecorations from './DiaryDecorations';
 
 interface DiaryPageProps {
   pageNumber: number;
-  type?: 'cover' | 'greeting' | 'memory' | 'ending';
+  type?: 'cover' | 'greeting' | 'intro-left' | 'intro-right' | 'memory' | 'ending';
   title?: string;
   content?: string;
   imageSrc?: string;
   className?: string;
+  girlfriendName?: string;
 }
 
 const DiaryPage = forwardRef<HTMLDivElement, DiaryPageProps>(
-  ({ pageNumber, type = 'memory', title, content, imageSrc, className = '' }, ref) => {
+  ({ pageNumber, type = 'memory', title, content, imageSrc, className = '', girlfriendName = 'My Love' }, ref) => {
+    const isIntroLeft = type === 'intro-left';
+    const isIntroRight = type === 'intro-right';
     const isFirstPage = type === 'greeting';
     const isLastPage = type === 'ending';
 
     return (
       <div 
         ref={ref}
-        className={`w-full h-full bg-gradient-to-br from-card via-milk-white to-card border-2 border-border rounded-2xl p-6 flex flex-col justify-between shadow-inner ${className}`}
+        className={`w-full h-full relative overflow-hidden ${className}`}
+        style={{
+          background: 'linear-gradient(135deg, hsl(280, 50%, 96%) 0%, hsl(340, 40%, 98%) 50%, hsl(350, 60%, 96%) 100%)',
+          borderRadius: '18px',
+          boxShadow: 'inset 0 0 0 1px rgba(280, 30%, 85%, 0.3)',
+        }}
       >
-        {/* Page header with decorative elements */}
-        <div className="text-center">
-          <div className="text-xs font-diary text-muted-foreground mb-2">
-            {isLastPage ? '💖 LOVE YOU 💖' : '✨ LUCK! ✨'}
-          </div>
-          <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-4"></div>
-        </div>
+        {/* Notebook texture overlay */}
+        <div 
+          className="absolute inset-0 opacity-30 pointer-events-none"
+          style={{
+            backgroundImage: `
+              repeating-linear-gradient(
+                transparent,
+                transparent 24px,
+                rgba(280, 40%, 80%, 0.15) 24px,
+                rgba(280, 40%, 80%, 0.15) 26px
+              )
+            `,
+            borderRadius: '18px'
+          }}
+        />
 
-        {/* Main content */}
-        <div className="flex-1 flex flex-col justify-center items-center text-center space-y-4">
+        {/* Cute decorations based on page type */}
+        {isIntroLeft && <DiaryDecorations variant="left" />}
+        {isIntroRight && <DiaryDecorations variant="right" />}
+        {(type === 'memory' || isFirstPage || isLastPage) && <DiaryDecorations variant="scattered" />}
+
+        {/* Main page content container */}
+        <div className="relative z-10 w-full h-full p-6 flex flex-col justify-between"
+        >
+          {/* Page header with decorative elements */}
+          <div className="text-center">
+            <div className="text-xs font-diary text-muted-foreground mb-2">
+              {isLastPage ? '💖 LOVE YOU 💖' : isIntroLeft ? '🥛 MILK 🥛' : isIntroRight ? '🤎 MOCHA 🤎' : '✨ LUCK! ✨'}
+            </div>
+            <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-4"></div>
+          </div>
+
+          {/* Intro Left Page - Decorative with scattered icons */}
+          {isIntroLeft && (
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="flex-1 flex flex-col justify-center items-center text-center space-y-6"
+            >
+              <div className="text-3xl font-handwriting text-primary">
+                <span role="img" aria-label="Sparkling heart">💖</span>
+              </div>
+              <h2 className="text-xl font-handwriting text-primary">
+                Welcome to Our
+              </h2>
+              <div className="text-lg font-cute text-foreground">
+                Magical Memory Book
+              </div>
+              <div className="flex space-x-3 text-2xl">
+                <span role="img" aria-label="Milk glass">🥛</span>
+                <span role="img" aria-label="Brown heart">🤎</span>
+                <span role="img" aria-label="Bubble tea">🧋</span>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Intro Right Page - "This Diary Belongs To" */}
+          {isIntroRight && (
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="flex-1 flex flex-col justify-center items-center text-center space-y-6"
+            >
+              <div className="space-y-4">
+                <h2 className="text-2xl font-handwriting text-primary leading-relaxed">
+                  This Diary Belongs To:
+                </h2>
+                <div className="relative">
+                  <div className="text-2xl font-handwriting text-secondary italic bg-gradient-to-r from-heart-pink to-primary bg-clip-text text-transparent">
+                    {girlfriendName}
+                  </div>
+                  <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-0.5 bg-gradient-to-r from-heart-pink to-primary"></div>
+                </div>
+              </div>
+              <div className="flex space-x-2 text-lg">
+                <span role="img" aria-label="Camera">📷</span>
+                <span role="img" aria-label="Rainbow">🌈</span>
+                <span role="img" aria-label="Cupcake">🧁</span>
+              </div>
+            </motion.div>
+          )}
+          {/* First greeting page */}
           {isFirstPage && (
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8 }}
-              className="space-y-4"
+              className="flex-1 flex flex-col justify-center items-center text-center space-y-4"
             >
               <h2 className="text-2xl md:text-3xl font-handwriting text-primary mb-4">
                 <span role="img" aria-label="Birthday cake">🎂</span> Happy Birthday My Love! <span role="img" aria-label="Two hearts">💕</span>
@@ -52,6 +135,12 @@ const DiaryPage = forwardRef<HTMLDivElement, DiaryPageProps>(
                 You are the best part of my life and this is a small world of our memories! 
                 Each page holds a piece of my heart <span role="img" aria-label="Gift with heart">💝</span>
               </p>
+              <div className="flex space-x-3 text-xl">
+                <span role="img" aria-label="Milk glass">🥛</span>
+                <span role="img" aria-label="Chocolate">🍫</span>
+                <span role="img" aria-label="Bubble tea">🧋</span>
+                <span role="img" aria-label="Teddy bear">🧸</span>
+              </div>
             </motion.div>
           )}
 
@@ -81,10 +170,12 @@ const DiaryPage = forwardRef<HTMLDivElement, DiaryPageProps>(
               <div className="flex justify-center space-x-4 text-2xl animate-sparkle" role="img" aria-label="Milk tea, chocolate, hearts, cherry blossoms and sparkles">
                 <span role="img" aria-label="Milk tea">🧋</span>
                 <span role="img" aria-label="Milk glass">🥛</span> 
+                <span role="img" aria-label="Chocolate">🍫</span>
                 <span role="img" aria-label="Brown heart">🤎</span>
                 <span role="img" aria-label="Pink heart">💕</span> 
                 <span role="img" aria-label="Cherry blossom">🌸</span> 
                 <span role="img" aria-label="Sparkles">✨</span>
+                <span role="img" aria-label="Teddy bear">🧸</span>
               </div>
             </motion.div>
           )}
@@ -120,15 +211,22 @@ const DiaryPage = forwardRef<HTMLDivElement, DiaryPageProps>(
                   "{content}"
                 </p>
               )}
+              
+              {/* Add milk/mocha themed decorations to memory pages */}
+              <div className="flex justify-center space-x-2 text-lg mt-3 opacity-70">
+                <span role="img" aria-label="Milk glass">🥛</span>
+                <span role="img" aria-label="Brown heart">🤎</span>
+                <span role="img" aria-label="Bubble tea">🧋</span>
+              </div>
             </motion.div>
           )}
-        </div>
 
-        {/* Page footer */}
-        <div className="text-center">
-          <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-2"></div>
-          <div className="text-xs font-diary text-muted-foreground">
-            {isLastPage ? '💫 The End' : `Page ${pageNumber} • Made with 💖`}
+          {/* Page footer */}
+          <div className="text-center">
+            <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-2"></div>
+            <div className="text-xs font-diary text-muted-foreground">
+              {isLastPage ? '💫 The End' : `Page ${pageNumber} • Made with 💖`}
+            </div>
           </div>
         </div>
       </div>

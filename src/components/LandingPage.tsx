@@ -80,6 +80,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ onOpenDiary }) => {
           className="mt-6 text-muted-foreground font-cute text-lg"
         >
           Double-tap the page edges to turn pages like a real diary <span role="img" aria-label="Open book">📖</span>
+          <br />
+          <span className="text-sm opacity-80">
+            <span role="img" aria-label="Milk glass">🥛</span> 
+            <span role="img" aria-label="Brown heart">🤎</span> 
+            <span role="img" aria-label="Bubble tea">🧋</span> 
+            Ready for a magical journey? 
+            <span role="img" aria-label="Sparkles">✨</span>
+          </span>
         </motion.p>
       </div>
     </div>

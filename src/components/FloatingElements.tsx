@@ -4,7 +4,8 @@ import milkBear from '@/assets/milk-bear.png';
 import mochaBear from '@/assets/mocha-bear.png';
 
 const FloatingElements = () => {
-  const hearts = ['💕', '💖', '💗', '💝', '💘', '🌸', '✨', '🌟'];
+  const hearts = ['💕', '💖', '💗', '💝', '💘', '🌸', '✨', '🌟', '🥛', '🤎', '🧋', '☕', '🍫'];
+  const milkMochaEmojis = ['🥛', '🤎', '🧋', '☕', '🍫', '🍰', '🧸'];
   
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden">
@@ -40,7 +41,7 @@ const FloatingElements = () => {
         }}
       />
 
-      {/* Floating hearts and sparkles */}
+      {/* Floating hearts, sparkles, and milk/mocha elements */}
       {hearts.map((emoji, index) => (
         <motion.div
           key={index}
@@ -58,6 +59,31 @@ const FloatingElements = () => {
             duration: 3 + Math.random() * 2,
             repeat: Infinity,
             delay: Math.random() * 2,
+            ease: "easeInOut"
+          }}
+        >
+          {emoji}
+        </motion.div>
+      ))}
+
+      {/* Additional floating Milk & Mocha themed elements */}
+      {milkMochaEmojis.map((emoji, index) => (
+        <motion.div
+          key={`mocha-${index}`}
+          className="absolute text-xl opacity-70"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+          }}
+          animate={{
+            x: [0, 10, -10, 0],
+            y: [0, -15, 0],
+            rotate: [0, 5, -5, 0],
+          }}
+          transition={{
+            duration: 4 + Math.random() * 2,
+            repeat: Infinity,
+            delay: Math.random() * 3,
             ease: "easeInOut"
           }}
         >

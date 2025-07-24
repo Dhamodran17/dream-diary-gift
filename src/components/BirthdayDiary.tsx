@@ -41,24 +41,27 @@ const BirthdayDiary: React.FC = () => {
     setCurrentPage(event.data);
   };
 
-  // Enhanced memory data with better accessibility
+  // Enhanced memory data with better accessibility and more Milk & Mocha emojis
   const memoryPages = [
     {
-      title: "🌟 Our First Date",
-      content: "This day with you is still my favorite memory 💫",
+      title: "🌟 Our First Date 🥛",
+      content: "This day with you is still my favorite memory 💫 Like milk and chocolate, we were meant to be together!",
       imageSrc: "https://images.unsplash.com/photo-1518843875459-f738682238a6?w=400&h=300&fit=crop&auto=format&q=80"
     },
     {
-      title: "💕 Adventure Together", 
-      content: "Every adventure is better with you by my side 🌈",
+      title: "💕 Adventure Together 🧋", 
+      content: "Every adventure is better with you by my side 🌈 Just like our favorite bubble tea dates!",
       imageSrc: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=300&fit=crop&auto=format&q=80"
     },
     {
-      title: "🎉 Special Moments",
-      content: "Creating beautiful memories, one smile at a time ✨",
+      title: "🎉 Special Moments 🍫",
+      content: "Creating beautiful memories, one smile at a time ✨ Sweet like chocolate, warm like cocoa!",
       imageSrc: "https://images.unsplash.com/photo-1496247749665-49cf5b1022e9?w=400&h=300&fit=crop&auto=format&q=80"
     }
   ];
+
+  // Girlfriend's name - you can customize this
+  const girlfriendName = "My Beautiful Love";
 
   return (
     <div className="min-h-screen bg-dreamy flex items-center justify-center relative overflow-hidden">
@@ -102,17 +105,30 @@ const BirthdayDiary: React.FC = () => {
             filter: 'drop-shadow(0 5px 15px rgba(320, 60%, 65%, 0.2))'
           }}
         >
-          {/* Greeting Page */}
+          {/* Intro Left Page - Decorative */}
           <DiaryPage 
             pageNumber={1} 
+            type="intro-left"
+          />
+
+          {/* Intro Right Page - "This Diary Belongs To" */}
+          <DiaryPage 
+            pageNumber={2} 
+            type="intro-right"
+            girlfriendName={girlfriendName}
+          />
+
+          {/* Greeting Page - Happy Birthday */}
+          <DiaryPage 
+            pageNumber={3} 
             type="greeting"
           />
 
           {/* Memory Pages */}
           {memoryPages.map((memory, index) => (
             <DiaryPage
-              key={index + 2}
-              pageNumber={index + 2}
+              key={index + 4}
+              pageNumber={index + 4}
               type="memory"
               title={memory.title}
               content={memory.content}
@@ -122,7 +138,7 @@ const BirthdayDiary: React.FC = () => {
 
           {/* Ending Page */}
           <DiaryPage 
-            pageNumber={5} 
+            pageNumber={7} 
             type="ending"
           />
         </HTMLFlipBook>
@@ -135,7 +151,7 @@ const BirthdayDiary: React.FC = () => {
 
         {/* Subtle page indicator */}
         <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 flex space-x-2">
-          {[0, 1, 2, 3, 4].map((page) => (
+          {[0, 1, 2, 3, 4, 5, 6].map((page) => (
             <div
               key={page}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${
@@ -154,6 +170,8 @@ const BirthdayDiary: React.FC = () => {
         >
           <p className="text-sm font-cute text-muted-foreground">
             💡 Double-tap page edges to turn • Left edge ← → Right edge
+            <br />
+            <span className="text-xs opacity-70">🥛🤎 Milk & Mocha are waiting to guide you through our memories! 🧋✨</span>
           </p>
         </motion.div>
       </motion.div>
