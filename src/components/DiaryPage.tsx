@@ -39,18 +39,18 @@ const DiaryPage = forwardRef<HTMLDivElement, DiaryPageProps>(
               className="space-y-4"
             >
               <h2 className="text-2xl md:text-3xl font-handwriting text-primary mb-4">
-                🎂 Happy Birthday My Love! 💕
+                <span role="img" aria-label="Birthday cake">🎂</span> Happy Birthday My Love! <span role="img" aria-label="Two hearts">💕</span>
               </h2>
               <div className="w-20 h-20 mx-auto mb-4">
                 <img 
                   src={milkMochaHug} 
-                  alt="Milk & Mocha Hug" 
+                  alt="Cute Milk and Mocha bears hugging with hearts, representing our love" 
                   className="w-full h-full object-contain animate-heart-bounce"
                 />
               </div>
               <p className="text-lg font-cute text-foreground leading-relaxed max-w-sm mx-auto">
                 You are the best part of my life and this is a small world of our memories! 
-                Each page holds a piece of my heart 💝
+                Each page holds a piece of my heart <span role="img" aria-label="Gift with heart">💝</span>
               </p>
             </motion.div>
           )}
@@ -70,14 +70,21 @@ const DiaryPage = forwardRef<HTMLDivElement, DiaryPageProps>(
                 />
               </div>
               <h2 className="text-2xl font-handwriting text-primary">
-                💝 Final Note 💝
+                💝 Our Forever Story 💝
               </h2>
               <p className="text-lg font-cute text-foreground leading-relaxed max-w-md mx-auto">
-                This book may close, but our memories keep writing new pages every day. 
-                I love you, forever and always 💖
+                This diary ends, but our story continues forever 💖 
+                Every sunrise brings new pages to write together, 
+                every moment with you becomes a treasured memory.
+                Thank you for being my happiest chapter, my love.
               </p>
-              <div className="flex justify-center space-x-4 text-2xl animate-sparkle">
-                🥛 🍫 💕 🌸 ✨
+              <div className="flex justify-center space-x-4 text-2xl animate-sparkle" role="img" aria-label="Milk tea, chocolate, hearts, cherry blossoms and sparkles">
+                <span role="img" aria-label="Milk tea">🧋</span>
+                <span role="img" aria-label="Milk glass">🥛</span> 
+                <span role="img" aria-label="Brown heart">🤎</span>
+                <span role="img" aria-label="Pink heart">💕</span> 
+                <span role="img" aria-label="Cherry blossom">🌸</span> 
+                <span role="img" aria-label="Sparkles">✨</span>
               </div>
             </motion.div>
           )}

@@ -3,16 +3,25 @@ import HTMLFlipBook from 'react-pageflip';
 import { motion } from 'framer-motion';
 import DiaryPage from './DiaryPage';
 import FloatingElements from './FloatingElements';
+import FloatingTooltip from './FloatingTooltip';
 
 const BirthdayDiary: React.FC = () => {
   const bookRef = useRef<any>(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [showTooltip, setShowTooltip] = useState(true);
+  const [hasInteracted, setHasInteracted] = useState(false);
 
-  // Handle double click for page turning
+  // Handle double click for page turning with enhanced interaction feedback
   const handleDoubleClick = (e: React.MouseEvent) => {
     const rect = (e.target as HTMLElement).getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const width = rect.width;
+
+    // Hide tooltip after first interaction
+    if (!hasInteracted) {
+      setHasInteracted(true);
+      setShowTooltip(false);
+    }
 
     if (clickX < width * 0.15) {
       // Double click on left edge = go to previous page
@@ -20,7 +29,7 @@ const BirthdayDiary: React.FC = () => {
         bookRef.current.pageFlip().flipPrev();
       }
     } else if (clickX > width * 0.85) {
-      // Double click on right edge = go to next page
+      // Double click on right edge = go to next page  
       if (bookRef.current) {
         bookRef.current.pageFlip().flipNext();
       }
@@ -32,22 +41,22 @@ const BirthdayDiary: React.FC = () => {
     setCurrentPage(event.data);
   };
 
-  // Sample memory data - you can replace these with real photos and messages
+  // Enhanced memory data with better accessibility
   const memoryPages = [
     {
       title: "🌟 Our First Date",
       content: "This day with you is still my favorite memory 💫",
-      imageSrc: "https://images.unsplash.com/photo-1518843875459-f738682238a6?w=400&h=300&fit=crop"
+      imageSrc: "https://images.unsplash.com/photo-1518843875459-f738682238a6?w=400&h=300&fit=crop&auto=format&q=80"
     },
     {
-      title: "💕 Adventure Together",
+      title: "💕 Adventure Together", 
       content: "Every adventure is better with you by my side 🌈",
-      imageSrc: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=300&fit=crop"
+      imageSrc: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=300&fit=crop&auto=format&q=80"
     },
     {
       title: "🎉 Special Moments",
       content: "Creating beautiful memories, one smile at a time ✨",
-      imageSrc: "https://images.unsplash.com/photo-1496247749665-49cf5b1022e9?w=400&h=300&fit=crop"
+      imageSrc: "https://images.unsplash.com/photo-1496247749665-49cf5b1022e9?w=400&h=300&fit=crop&auto=format&q=80"
     }
   ];
 
@@ -56,9 +65,9 @@ const BirthdayDiary: React.FC = () => {
       <FloatingElements />
       
       <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1 }}
+        initial={{ opacity: 0, scale: 0.8, rotateY: -10 }}
+        animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
         className="relative z-10"
         onDoubleClick={handleDoubleClick}
       >
@@ -71,10 +80,10 @@ const BirthdayDiary: React.FC = () => {
           minHeight={400}
           maxWidth={450}
           maxHeight={600}
-          maxShadowOpacity={0.3}
+          maxShadowOpacity={0.4}
           showCover={true}
           mobileScrollSupport={false}
-          flippingTime={1800}
+          flippingTime={2000} // Slower, more realistic animation
           useMouseEvents={false}
           swipeDistance={0}
           clickEventForward={false}
@@ -83,13 +92,14 @@ const BirthdayDiary: React.FC = () => {
           drawShadow={true}
           usePortrait={true}
           startZIndex={0}
-          autoSize={true}
-          showPageCorners={true}
+          autoSize={false}
+          showPageCorners={false}
           disableFlipByClick={true}
           className="diary-book"
           style={{
             borderRadius: '20px',
-            boxShadow: '0 10px 40px rgba(0,0,0,0.15)',
+            boxShadow: '0 15px 50px rgba(0,0,0,0.2)',
+            filter: 'drop-shadow(0 5px 15px rgba(320, 60%, 65%, 0.2))'
           }}
         >
           {/* Greeting Page */}
@@ -116,6 +126,12 @@ const BirthdayDiary: React.FC = () => {
             type="ending"
           />
         </HTMLFlipBook>
+
+        {/* Floating instruction tooltip */}
+        <FloatingTooltip 
+          show={showTooltip && !hasInteracted} 
+          onFirstInteraction={() => setShowTooltip(false)}
+        />
 
         {/* Subtle page indicator */}
         <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 flex space-x-2">
