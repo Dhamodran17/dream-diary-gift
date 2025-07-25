@@ -22,19 +22,21 @@ const DiaryPage = forwardRef<HTMLDivElement, DiaryPageProps>(
     const isLastPage = type === 'ending';
     const isValuePage = type === 'value';
 
-    return (
-      <div 
-        ref={ref}
-        className={`w-full h-full relative overflow-hidden ${className}`}
-        style={{
-          backgroundImage: `linear-gradient(135deg, rgba(280, 50%, 96%, 0.9) 0%, rgba(340, 40%, 98%, 0.9) 50%, rgba(350, 60%, 96%, 0.9) 100%), url(${newDiaryCover})`,
-          backgroundSize: 'cover, cover',
-          backgroundPosition: 'center, center',
-          backgroundBlendMode: 'overlay',
-          borderRadius: '18px',
-          boxShadow: 'inset 0 0 0 1px rgba(280, 30%, 85%, 0.3)',
-        }}
-      >
+  return (
+    <div 
+      ref={ref}
+      className={`w-full h-full relative overflow-hidden ${className} ${pageNumber % 2 === 0 ? 'right-page' : 'left-page'}`}
+      style={{
+        backgroundImage: `linear-gradient(135deg, rgba(280, 50%, 96%, 0.9) 0%, rgba(340, 40%, 98%, 0.9) 50%, rgba(350, 60%, 96%, 0.9) 100%), url(${newDiaryCover})`,
+        backgroundSize: 'cover, cover',
+        backgroundPosition: 'center, center',
+        backgroundBlendMode: 'overlay',
+        borderRadius: '18px',
+        boxShadow: 'inset 0 0 0 1px rgba(280, 30%, 85%, 0.3)',
+      }}
+    >
+      {/* Ring binding margin */}
+      <div className="absolute left-0 top-0 w-10 h-full bg-gradient-to-r from-gray-200/40 via-gray-100/20 to-transparent opacity-60 pointer-events-none"></div>
         {/* Notebook texture overlay */}
         <div 
           className="absolute inset-0 opacity-30 pointer-events-none"
@@ -56,8 +58,8 @@ const DiaryPage = forwardRef<HTMLDivElement, DiaryPageProps>(
         {isIntroRight && <DiaryDecorations variant="right" />}
         {(type === 'memory' || isFirstPage || isLastPage || isValuePage) && <DiaryDecorations variant="scattered" />}
 
-        {/* Main page content container */}
-        <div className="relative z-10 w-full h-full p-6 flex flex-col justify-between"
+        {/* Main page content container with binding space */}
+        <div className="relative z-10 w-full h-full pl-12 pr-6 py-6 flex flex-col justify-between"
         >
           {/* Page header with decorative elements */}
           <div className="text-center">

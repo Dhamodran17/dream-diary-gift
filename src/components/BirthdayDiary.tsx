@@ -76,33 +76,36 @@ const BirthdayDiary: React.FC = () => {
       >
         <HTMLFlipBook
           ref={bookRef}
-          width={500}
-          height={700}
+          width={600}
+          height={800}
           size="stretch"
-          minWidth={320}
-          minHeight={480}
-          maxWidth={600}
-          maxHeight={800}
-          maxShadowOpacity={0.5}
+          minWidth={380}
+          minHeight={540}
+          maxWidth={800}
+          maxHeight={1000}
+          maxShadowOpacity={0.8}
           showCover={true}
           mobileScrollSupport={true}
-          flippingTime={1500}
+          flippingTime={1200}
           useMouseEvents={true}
-          swipeDistance={50}
+          swipeDistance={30}
           clickEventForward={true}
           onFlip={onFlip}
           startPage={0}
           drawShadow={true}
-          usePortrait={true}
+          usePortrait={false}
           startZIndex={0}
           autoSize={true}
           showPageCorners={true}
           disableFlipByClick={false}
           className="diary-book"
           style={{
-            borderRadius: '20px',
-            boxShadow: '0 15px 50px rgba(0,0,0,0.2)',
-            filter: 'drop-shadow(0 5px 15px rgba(320, 60%, 65%, 0.2))'
+            borderRadius: '25px',
+            boxShadow: '0 20px 60px rgba(0,0,0,0.3), inset 0 0 20px rgba(255,255,255,0.1)',
+            filter: 'drop-shadow(0 8px 25px rgba(320, 60%, 65%, 0.3))',
+            background: 'linear-gradient(145deg, #f8f6f3, #ede8e0)',
+            border: '3px solid #d4af37',
+            position: 'relative'
           }}
         >
           {/* Intro Left Page - Decorative */}
@@ -150,8 +153,8 @@ const BirthdayDiary: React.FC = () => {
           />
         </HTMLFlipBook>
 
-        {/* Hanging Mocha/Milk Emojis */}
-        <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 flex space-x-8 z-20">
+        {/* Hanging Mocha/Milk Emojis with Ring Binding Effect */}
+        <div className="absolute -top-20 left-1/2 transform -translate-x-1/2 flex space-x-12 z-20">
           <motion.div
             animate={{ 
               y: [0, -8, 0],
@@ -162,7 +165,7 @@ const BirthdayDiary: React.FC = () => {
               repeat: Infinity,
               ease: "easeInOut"
             }}
-            className="text-3xl"
+            className="text-4xl filter drop-shadow-lg"
             role="img"
             aria-label="Milk emoji"
           >
@@ -179,7 +182,7 @@ const BirthdayDiary: React.FC = () => {
               ease: "easeInOut",
               delay: 0.5
             }}
-            className="text-3xl"
+            className="text-4xl filter drop-shadow-lg"
             role="img"
             aria-label="Mocha emoji"
           >
@@ -196,13 +199,61 @@ const BirthdayDiary: React.FC = () => {
               ease: "easeInOut",
               delay: 1
             }}
-            className="text-3xl"
+            className="text-4xl filter drop-shadow-lg"
             role="img"
             aria-label="Bubble tea emoji"
           >
             🧋
           </motion.div>
         </div>
+
+        {/* Ring Binding Effect */}
+        <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-30">
+          <div className="flex space-x-4">
+            {[...Array(5)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="w-4 h-8 bg-gradient-to-b from-gray-400 to-gray-600 rounded-full shadow-lg"
+                animate={{
+                  scaleY: [1, 1.1, 1],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  delay: i * 0.2,
+                  ease: "easeInOut"
+                }}
+                style={{
+                  background: 'linear-gradient(145deg, #c0c0c0, #808080)',
+                  border: '1px solid #666'
+                }}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Decorative Stationery Items */}
+        <motion.div
+          className="absolute -right-16 top-20 text-2xl"
+          animate={{ rotate: [0, 5, 0, -5, 0] }}
+          transition={{ duration: 4, repeat: Infinity }}
+        >
+          ✏️
+        </motion.div>
+        <motion.div
+          className="absolute -left-16 bottom-32 text-2xl"
+          animate={{ rotate: [0, -3, 0, 3, 0] }}
+          transition={{ duration: 3, repeat: Infinity, delay: 1 }}
+        >
+          📎
+        </motion.div>
+        <motion.div
+          className="absolute -right-12 bottom-16 text-xl"
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }}
+        >
+          ⭐
+        </motion.div>
 
         {/* Subtle page indicator */}
         <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 flex space-x-2">
