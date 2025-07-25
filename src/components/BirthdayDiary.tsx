@@ -11,25 +11,19 @@ const BirthdayDiary: React.FC = () => {
   const [showTooltip, setShowTooltip] = useState(true);
   const [hasInteracted, setHasInteracted] = useState(false);
 
-  // Handle double click for page turning with enhanced interaction feedback
+  // Handle double click for page turning - both sides enabled
   const handleDoubleClick = (e: React.MouseEvent) => {
     const rect = (e.target as HTMLElement).getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const width = rect.width;
 
-    // Hide tooltip after first interaction
-    if (!hasInteracted) {
-      setHasInteracted(true);
-      setShowTooltip(false);
-    }
-
-    if (clickX < width * 0.15) {
-      // Double click on left edge = go to previous page
+    if (clickX < width * 0.5) {
+      // Double click on left half = go to previous page
       if (bookRef.current && currentPage > 0) {
         bookRef.current.pageFlip().flipPrev();
       }
-    } else if (clickX > width * 0.85) {
-      // Double click on right edge = go to next page  
+    } else {
+      // Double click on right half = go to next page  
       if (bookRef.current) {
         bookRef.current.pageFlip().flipNext();
       }
@@ -76,17 +70,17 @@ const BirthdayDiary: React.FC = () => {
       >
         <HTMLFlipBook
           ref={bookRef}
-          width={350}
-          height={500}
+          width={450}
+          height={650}
           size="stretch"
-          minWidth={300}
-          minHeight={400}
-          maxWidth={450}
-          maxHeight={600}
-          maxShadowOpacity={0.4}
+          minWidth={400}
+          minHeight={550}
+          maxWidth={550}
+          maxHeight={750}
+          maxShadowOpacity={0.5}
           showCover={true}
           mobileScrollSupport={false}
-          flippingTime={2000} // Slower, more realistic animation
+          flippingTime={1800}
           useMouseEvents={false}
           swipeDistance={0}
           clickEventForward={false}
@@ -96,7 +90,7 @@ const BirthdayDiary: React.FC = () => {
           usePortrait={true}
           startZIndex={0}
           autoSize={false}
-          showPageCorners={false}
+          showPageCorners={true}
           disableFlipByClick={true}
           className="diary-book"
           style={{
@@ -143,11 +137,59 @@ const BirthdayDiary: React.FC = () => {
           />
         </HTMLFlipBook>
 
-        {/* Floating instruction tooltip */}
-        <FloatingTooltip 
-          show={showTooltip && !hasInteracted} 
-          onFirstInteraction={() => setShowTooltip(false)}
-        />
+        {/* Hanging Mocha/Milk Emojis */}
+        <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 flex space-x-8 z-20">
+          <motion.div
+            animate={{ 
+              y: [0, -8, 0],
+              rotate: [0, 5, 0, -5, 0]
+            }}
+            transition={{ 
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            className="text-3xl"
+            role="img"
+            aria-label="Milk emoji"
+          >
+            🥛
+          </motion.div>
+          <motion.div
+            animate={{ 
+              y: [0, -6, 0],
+              rotate: [0, -3, 0, 3, 0]
+            }}
+            transition={{ 
+              duration: 2.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 0.5
+            }}
+            className="text-3xl"
+            role="img"
+            aria-label="Mocha emoji"
+          >
+            🤎
+          </motion.div>
+          <motion.div
+            animate={{ 
+              y: [0, -10, 0],
+              rotate: [0, 4, 0, -4, 0]
+            }}
+            transition={{ 
+              duration: 3.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 1
+            }}
+            className="text-3xl"
+            role="img"
+            aria-label="Bubble tea emoji"
+          >
+            🧋
+          </motion.div>
+        </div>
 
         {/* Subtle page indicator */}
         <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 flex space-x-2">
@@ -161,17 +203,15 @@ const BirthdayDiary: React.FC = () => {
           ))}
         </div>
 
-        {/* Instruction hint */}
+        {/* Gentle hint */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 2, duration: 1 }}
-          className="absolute -bottom-20 left-1/2 transform -translate-x-1/2 text-center"
+          transition={{ delay: 3, duration: 1 }}
+          className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 text-center"
         >
-          <p className="text-sm font-cute text-muted-foreground">
-            💡 Double-tap page edges to turn • Left edge ← → Right edge
-            <br />
-            <span className="text-xs opacity-70">🥛🤎 Milk & Mocha are waiting to guide you through our memories! 🧋✨</span>
+          <p className="text-xs font-cute text-muted-foreground/70">
+            🥛🤎 Milk & Mocha are waiting to guide you through our memories! 🧋✨
           </p>
         </motion.div>
       </motion.div>

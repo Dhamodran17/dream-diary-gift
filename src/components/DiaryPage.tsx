@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react';
 import { motion } from 'framer-motion';
 import milkMochaHug from '@/assets/milk-mocha-hug.png';
+import newDiaryCover from '@/assets/new-diary-cover.png';
 import DiaryDecorations from './DiaryDecorations';
 
 interface DiaryPageProps {
@@ -25,7 +26,10 @@ const DiaryPage = forwardRef<HTMLDivElement, DiaryPageProps>(
         ref={ref}
         className={`w-full h-full relative overflow-hidden ${className}`}
         style={{
-          background: 'linear-gradient(135deg, hsl(280, 50%, 96%) 0%, hsl(340, 40%, 98%) 50%, hsl(350, 60%, 96%) 100%)',
+          backgroundImage: `linear-gradient(135deg, rgba(280, 50%, 96%, 0.9) 0%, rgba(340, 40%, 98%, 0.9) 50%, rgba(350, 60%, 96%, 0.9) 100%), url(${newDiaryCover})`,
+          backgroundSize: 'cover, cover',
+          backgroundPosition: 'center, center',
+          backgroundBlendMode: 'overlay',
           borderRadius: '18px',
           boxShadow: 'inset 0 0 0 1px rgba(280, 30%, 85%, 0.3)',
         }}
