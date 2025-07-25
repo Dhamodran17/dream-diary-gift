@@ -13,19 +13,25 @@ const BirthdayDiary: React.FC = () => {
 
   // Handle double click for page turning - both sides enabled
   const handleDoubleClick = (e: React.MouseEvent) => {
+    if (!bookRef.current) return;
+    
     const rect = (e.target as HTMLElement).getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const width = rect.width;
 
     if (clickX < width * 0.5) {
       // Double click on left half = go to previous page
-      if (bookRef.current && currentPage > 0) {
+      try {
         bookRef.current.pageFlip().flipPrev();
+      } catch (error) {
+        console.log('Cannot go to previous page');
       }
     } else {
       // Double click on right half = go to next page  
-      if (bookRef.current) {
+      try {
         bookRef.current.pageFlip().flipNext();
+      } catch (error) {
+        console.log('Cannot go to next page');
       }
     }
   };
@@ -58,7 +64,7 @@ const BirthdayDiary: React.FC = () => {
   const girlfriendName = "My Beautiful Love";
 
   return (
-    <div className="min-h-screen bg-dreamy flex items-center justify-center relative overflow-hidden">
+    <div className="min-h-screen bg-dreamy flex items-center justify-center relative overflow-hidden p-4">
       <FloatingElements />
       
       <motion.div
@@ -70,28 +76,28 @@ const BirthdayDiary: React.FC = () => {
       >
         <HTMLFlipBook
           ref={bookRef}
-          width={450}
-          height={650}
+          width={500}
+          height={700}
           size="stretch"
-          minWidth={400}
-          minHeight={550}
-          maxWidth={550}
-          maxHeight={750}
+          minWidth={320}
+          minHeight={480}
+          maxWidth={600}
+          maxHeight={800}
           maxShadowOpacity={0.5}
           showCover={true}
-          mobileScrollSupport={false}
-          flippingTime={1800}
-          useMouseEvents={false}
-          swipeDistance={0}
-          clickEventForward={false}
+          mobileScrollSupport={true}
+          flippingTime={1500}
+          useMouseEvents={true}
+          swipeDistance={50}
+          clickEventForward={true}
           onFlip={onFlip}
           startPage={0}
           drawShadow={true}
           usePortrait={true}
           startZIndex={0}
-          autoSize={false}
+          autoSize={true}
           showPageCorners={true}
-          disableFlipByClick={true}
+          disableFlipByClick={false}
           className="diary-book"
           style={{
             borderRadius: '20px',
@@ -134,6 +140,13 @@ const BirthdayDiary: React.FC = () => {
           <DiaryPage 
             pageNumber={7} 
             type="ending"
+          />
+
+          {/* Final Value Page */}
+          <DiaryPage 
+            pageNumber={8} 
+            type="value"
+            girlfriendName={girlfriendName}
           />
         </HTMLFlipBook>
 
@@ -193,7 +206,7 @@ const BirthdayDiary: React.FC = () => {
 
         {/* Subtle page indicator */}
         <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 flex space-x-2">
-          {[0, 1, 2, 3, 4, 5, 6].map((page) => (
+          {[0, 1, 2, 3, 4, 5, 6, 7].map((page) => (
             <div
               key={page}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${

@@ -6,7 +6,7 @@ import DiaryDecorations from './DiaryDecorations';
 
 interface DiaryPageProps {
   pageNumber: number;
-  type?: 'cover' | 'greeting' | 'intro-left' | 'intro-right' | 'memory' | 'ending';
+  type?: 'cover' | 'greeting' | 'intro-left' | 'intro-right' | 'memory' | 'ending' | 'value';
   title?: string;
   content?: string;
   imageSrc?: string;
@@ -20,6 +20,7 @@ const DiaryPage = forwardRef<HTMLDivElement, DiaryPageProps>(
     const isIntroRight = type === 'intro-right';
     const isFirstPage = type === 'greeting';
     const isLastPage = type === 'ending';
+    const isValuePage = type === 'value';
 
     return (
       <div 
@@ -53,7 +54,7 @@ const DiaryPage = forwardRef<HTMLDivElement, DiaryPageProps>(
         {/* Cute decorations based on page type */}
         {isIntroLeft && <DiaryDecorations variant="left" />}
         {isIntroRight && <DiaryDecorations variant="right" />}
-        {(type === 'memory' || isFirstPage || isLastPage) && <DiaryDecorations variant="scattered" />}
+        {(type === 'memory' || isFirstPage || isLastPage || isValuePage) && <DiaryDecorations variant="scattered" />}
 
         {/* Main page content container */}
         <div className="relative z-10 w-full h-full p-6 flex flex-col justify-between"
@@ -61,7 +62,7 @@ const DiaryPage = forwardRef<HTMLDivElement, DiaryPageProps>(
           {/* Page header with decorative elements */}
           <div className="text-center">
             <div className="text-xs font-diary text-muted-foreground mb-2">
-              {isLastPage ? '💖 LOVE YOU 💖' : isIntroLeft ? '🥛 MILK 🥛' : isIntroRight ? '🤎 MOCHA 🤎' : '✨ LUCK! ✨'}
+              {isValuePage ? '💎 PRECIOUS 💎' : isLastPage ? '💖 LOVE YOU 💖' : isIntroLeft ? '🥛 MILK 🥛' : isIntroRight ? '🤎 MOCHA 🤎' : '✨ LUCK! ✨'}
             </div>
             <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-4"></div>
           </div>
@@ -184,6 +185,89 @@ const DiaryPage = forwardRef<HTMLDivElement, DiaryPageProps>(
             </motion.div>
           )}
 
+          {/* Value Page - Beautiful final page about her worth */}
+          {isValuePage && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              className="flex-1 flex flex-col justify-center items-center text-center space-y-6 px-4"
+            >
+              <motion.div
+                animate={{ 
+                  scale: [1, 1.1, 1],
+                  rotate: [0, 5, -5, 0]
+                }}
+                transition={{ 
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="w-20 h-20 mb-4"
+              >
+                <img 
+                  src={milkMochaHug} 
+                  alt="Eternal Love" 
+                  className="w-full h-full object-contain"
+                />
+              </motion.div>
+              
+              <motion.h2 
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.5, duration: 0.8 }}
+                className="text-2xl md:text-3xl font-handwriting text-primary bg-gradient-to-r from-heart-pink via-primary to-secondary bg-clip-text text-transparent"
+              >
+                Your Worth in My Life
+              </motion.h2>
+              
+              <motion.div
+                initial={{ y: 30, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.8, duration: 0.8 }}
+                className="space-y-4 max-w-sm mx-auto"
+              >
+                <p className="text-base font-cute text-foreground leading-relaxed">
+                  You are my morning sunshine ☀️ and my evening star 🌟
+                </p>
+                <p className="text-base font-cute text-foreground leading-relaxed">
+                  The laugh that heals my heart 💚 and the smile that brightens my darkest days ✨
+                </p>
+                <p className="text-base font-cute text-foreground leading-relaxed">
+                  You are not just my love, you are my home 🏠 my peace 🕊️ and my forever 💕
+                </p>
+              </motion.div>
+
+              <motion.div
+                animate={{ 
+                  y: [0, -10, 0],
+                  scale: [1, 1.2, 1]
+                }}
+                transition={{ 
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 1.5
+                }}
+                className="flex justify-center space-x-3 text-2xl"
+              >
+                <span role="img" aria-label="Infinity">♾️</span>
+                <span role="img" aria-label="Milk glass">🥛</span>
+                <span role="img" aria-label="Brown heart">🤎</span>
+                <span role="img" aria-label="Infinity">♾️</span>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 2, duration: 1 }}
+                className="text-lg font-handwriting text-secondary italic"
+              >
+                Forever yours, {girlfriendName} 💖
+              </motion.div>
+            </motion.div>
+          )}
+
           {type === 'memory' && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -229,7 +313,7 @@ const DiaryPage = forwardRef<HTMLDivElement, DiaryPageProps>(
           <div className="text-center">
             <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-2"></div>
             <div className="text-xs font-diary text-muted-foreground">
-              {isLastPage ? '💫 The End' : `Page ${pageNumber} • Made with 💖`}
+              {isValuePage ? '💎 Priceless' : isLastPage ? '💫 The End' : `Page ${pageNumber} • Made with 💖`}
             </div>
           </div>
         </div>
