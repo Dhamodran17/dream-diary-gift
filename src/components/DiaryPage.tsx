@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import milkMochaHug from '@/assets/milk-mocha-hug.png';
 import newDiaryCover from '@/assets/new-diary-cover.png';
 import DiaryDecorations from './DiaryDecorations';
+import PinkStickers from './PinkStickers';
 
 interface DiaryPageProps {
   pageNumber: number;
@@ -27,12 +28,21 @@ const DiaryPage = forwardRef<HTMLDivElement, DiaryPageProps>(
       ref={ref}
       className={`w-full h-full relative overflow-hidden ${className} ${pageNumber % 2 === 0 ? 'right-page' : 'left-page'}`}
       style={{
-        backgroundImage: `linear-gradient(135deg, rgba(280, 50%, 96%, 0.9) 0%, rgba(340, 40%, 98%, 0.9) 50%, rgba(350, 60%, 96%, 0.9) 100%), url(${newDiaryCover})`,
+        backgroundImage: `
+          linear-gradient(135deg, 
+            rgba(340, 80%, 95%, 0.9) 0%, 
+            rgba(320, 70%, 96%, 0.9) 25%,
+            rgba(350, 85%, 97%, 0.9) 50%, 
+            rgba(330, 75%, 95%, 0.9) 75%,
+            rgba(340, 80%, 96%, 0.9) 100%
+          ),
+          url(${newDiaryCover})
+        `,
         backgroundSize: 'cover, cover',
         backgroundPosition: 'center, center',
         backgroundBlendMode: 'overlay',
         borderRadius: '18px',
-        boxShadow: 'inset 0 0 0 1px rgba(280, 30%, 85%, 0.3)',
+        boxShadow: 'inset 0 0 0 1px rgba(320, 50%, 80%, 0.4), inset 0 0 20px rgba(340, 60%, 90%, 0.3)',
       }}
     >
       {/* Ring binding margin */}
@@ -53,10 +63,23 @@ const DiaryPage = forwardRef<HTMLDivElement, DiaryPageProps>(
           }}
         />
 
-        {/* Cute decorations based on page type */}
-        {isIntroLeft && <DiaryDecorations variant="left" />}
-        {isIntroRight && <DiaryDecorations variant="right" />}
-        {(type === 'memory' || isFirstPage || isLastPage || isValuePage) && <DiaryDecorations variant="scattered" />}
+        {/* Pink sticker decorations matching uploaded image aesthetic */}
+        {isIntroLeft && (
+          <>
+            <DiaryDecorations variant="left" />
+            <PinkStickers variant="hearts" count={6} />
+          </>
+        )}
+        {isIntroRight && (
+          <>
+            <DiaryDecorations variant="right" />
+            <PinkStickers variant="butterflies" count={5} />
+          </>
+        )}
+        {isFirstPage && <PinkStickers variant="mixed" count={10} />}
+        {type === 'memory' && <PinkStickers variant="flowers" count={7} />}
+        {isLastPage && <PinkStickers variant="hearts" count={8} />}
+        {isValuePage && <PinkStickers variant="mixed" count={12} />}
 
         {/* Main page content container with binding space */}
         <div className="relative z-10 w-full h-full pl-12 pr-6 py-6 flex flex-col justify-between"

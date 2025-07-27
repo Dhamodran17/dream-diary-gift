@@ -1,15 +1,36 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import HTMLFlipBook from 'react-pageflip';
 import { motion } from 'framer-motion';
 import DiaryPage from './DiaryPage';
 import FloatingElements from './FloatingElements';
 import FloatingTooltip from './FloatingTooltip';
+import RelationshipBondsPage from './RelationshipBondsPage';
 
 const BirthdayDiary: React.FC = () => {
   const bookRef = useRef<any>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [showTooltip, setShowTooltip] = useState(true);
   const [hasInteracted, setHasInteracted] = useState(false);
+  const [showRelationshipPage, setShowRelationshipPage] = useState(false);
+
+  // Background music setup
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = 0.3;
+      audioRef.current.loop = true;
+      
+      const playAudio = async () => {
+        try {
+          await audioRef.current?.play();
+        } catch (error) {
+          console.log('Audio autoplay prevented by browser');
+        }
+      };
+      
+      playAudio();
+    }
+  }, []);
 
   // Handle double click for page turning - both sides enabled
   const handleDoubleClick = (e: React.MouseEvent) => {
@@ -39,6 +60,13 @@ const BirthdayDiary: React.FC = () => {
   // Handle page flip events
   const onFlip = (event: any) => {
     setCurrentPage(event.data);
+    
+    // Show relationship page after last diary page
+    if (event.data >= 7) {
+      setTimeout(() => {
+        setShowRelationshipPage(true);
+      }, 1500);
+    }
   };
 
   // Enhanced memory data with better accessibility and more Milk & Mocha emojis
@@ -63,8 +91,20 @@ const BirthdayDiary: React.FC = () => {
   // Girlfriend's name - you can customize this
   const girlfriendName = "My Beautiful Love";
 
+  if (showRelationshipPage) {
+    return <RelationshipBondsPage onBack={() => setShowRelationshipPage(false)} />;
+  }
+
   return (
     <div className="min-h-screen bg-dreamy flex items-center justify-center relative overflow-hidden p-4">
+      {/* Background Music */}
+      <audio
+        ref={audioRef}
+        src="https://www.soundjay.com/misc/sounds/magic-chime-02.wav"
+        preload="auto"
+        className="hidden"
+      />
+      
       <FloatingElements />
       
       <motion.div
@@ -76,17 +116,17 @@ const BirthdayDiary: React.FC = () => {
       >
         <HTMLFlipBook
           ref={bookRef}
-          width={600}
-          height={800}
+          width={700}
+          height={900}
           size="stretch"
-          minWidth={380}
-          minHeight={540}
-          maxWidth={800}
-          maxHeight={1000}
-          maxShadowOpacity={0.8}
+          minWidth={400}
+          minHeight={600}
+          maxWidth={900}
+          maxHeight={1200}
+          maxShadowOpacity={0.9}
           showCover={true}
           mobileScrollSupport={true}
-          flippingTime={1200}
+          flippingTime={1500}
           useMouseEvents={true}
           swipeDistance={30}
           clickEventForward={true}
