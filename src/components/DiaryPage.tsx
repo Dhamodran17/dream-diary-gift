@@ -4,24 +4,28 @@ import milkMochaHug from '@/assets/milk-mocha-hug.png';
 import newDiaryCover from '@/assets/new-diary-cover.png';
 import DiaryDecorations from './DiaryDecorations';
 import PinkStickers from './PinkStickers';
+import CollageLayouts from './CollageLayouts';
 
 interface DiaryPageProps {
   pageNumber: number;
-  type?: 'cover' | 'greeting' | 'intro-left' | 'intro-right' | 'memory' | 'ending' | 'value';
+  type?: 'cover' | 'greeting' | 'intro-left' | 'intro-right' | 'memory' | 'ending' | 'value' | 'collage';
   title?: string;
   content?: string;
   imageSrc?: string;
   className?: string;
   girlfriendName?: string;
+  images?: string[];
+  collageLayout?: 'grid-4' | 'grid-6' | 'masonry' | 'scattered' | 'polaroid' | 'heart-shape';
 }
 
 const DiaryPage = forwardRef<HTMLDivElement, DiaryPageProps>(
-  ({ pageNumber, type = 'memory', title, content, imageSrc, className = '', girlfriendName = 'My Love' }, ref) => {
+  ({ pageNumber, type = 'memory', title, content, imageSrc, className = '', girlfriendName = 'My Love', images = [], collageLayout = 'grid-4' }, ref) => {
     const isIntroLeft = type === 'intro-left';
     const isIntroRight = type === 'intro-right';
     const isFirstPage = type === 'greeting';
     const isLastPage = type === 'ending';
     const isValuePage = type === 'value';
+    const isCollagePage = type === 'collage';
 
   return (
     <div 
@@ -78,6 +82,7 @@ const DiaryPage = forwardRef<HTMLDivElement, DiaryPageProps>(
         )}
         {isFirstPage && <PinkStickers variant="mixed" count={10} />}
         {type === 'memory' && <PinkStickers variant="flowers" count={7} />}
+        {isCollagePage && <PinkStickers variant="butterflies" count={6} />}
         {isLastPage && <PinkStickers variant="hearts" count={8} />}
         {isValuePage && <PinkStickers variant="mixed" count={12} />}
 
@@ -330,6 +335,51 @@ const DiaryPage = forwardRef<HTMLDivElement, DiaryPageProps>(
                 <span role="img" aria-label="Milk glass">🥛</span>
                 <span role="img" aria-label="Brown heart">🤎</span>
                 <span role="img" aria-label="Bubble tea">🧋</span>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Collage Page */}
+          {isCollagePage && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="flex-1 space-y-4"
+            >
+              {title && (
+                <motion.h3 
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="text-xl font-handwriting text-primary text-center"
+                >
+                  {title}
+                </motion.h3>
+              )}
+              
+              <CollageLayouts 
+                images={images} 
+                layout={collageLayout}
+                className="flex-1"
+              />
+              
+              {content && (
+                <motion.p 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 }}
+                  className="text-sm font-cute text-foreground leading-relaxed text-center max-w-xs mx-auto"
+                >
+                  {content}
+                </motion.p>
+              )}
+              
+              {/* Collage page decorations */}
+              <div className="flex justify-center space-x-2 text-lg opacity-70">
+                <span role="img" aria-label="Camera">📷</span>
+                <span role="img" aria-label="Heart eyes">😍</span>
+                <span role="img" aria-label="Sparkles">✨</span>
               </div>
             </motion.div>
           )}

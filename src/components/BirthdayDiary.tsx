@@ -62,29 +62,79 @@ const BirthdayDiary: React.FC = () => {
     setCurrentPage(event.data);
     
     // Show relationship page after last diary page
-    if (event.data >= 7) {
+    if (event.data >= 13) {
       setTimeout(() => {
         setShowRelationshipPage(true);
       }, 1500);
     }
   };
 
-  // Enhanced memory data with better accessibility and more Milk & Mocha emojis
-  const memoryPages = [
+  // Sample image URLs - replace with your 48 actual images
+  const sampleImages = [
+    "/lovable-uploads/6d961388-49e2-429b-833c-9118016eee73.png", // Your uploaded collage reference
+    "https://images.unsplash.com/photo-1518843875459-f738682238a6?w=400&h=300&fit=crop&auto=format&q=80",
+    "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=300&fit=crop&auto=format&q=80",
+    "https://images.unsplash.com/photo-1496247749665-49cf5b1022e9?w=400&h=300&fit=crop&auto=format&q=80",
+    "https://images.unsplash.com/photo-1502134249126-9f3755a50d78?w=400&h=300&fit=crop&auto=format&q=80",
+    "https://images.unsplash.com/photo-1522748877644-67dc4b03cbce?w=400&h=300&fit=crop&auto=format&q=80",
+    // Add your 48 actual images here...
+  ];
+
+  // Function to get images for each collage page
+  const getImagesForPage = (pageIndex: number, imagesPerPage: number) => {
+    const startIndex = pageIndex * imagesPerPage;
+    return sampleImages.slice(startIndex, startIndex + imagesPerPage);
+  };
+
+  // Collage pages data with different layouts
+  const collagePages = [
     {
-      title: "🌟 Our First Date 🥛",
-      content: "This day with you is still my favorite memory 💫 Like milk and chocolate, we were meant to be together!",
-      imageSrc: "https://images.unsplash.com/photo-1518843875459-f738682238a6?w=400&h=300&fit=crop&auto=format&q=80"
+      title: "💖 Our Beautiful Moments",
+      content: "Every picture tells our love story 📸",
+      layout: "grid-4" as const,
+      imagesPerPage: 4
     },
     {
-      title: "💕 Adventure Together 🧋", 
-      content: "Every adventure is better with you by my side 🌈 Just like our favorite bubble tea dates!",
-      imageSrc: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=300&fit=crop&auto=format&q=80"
+      title: "🌈 Adventures Together",
+      content: "Creating memories everywhere we go ✨",
+      layout: "grid-6" as const,
+      imagesPerPage: 6
     },
     {
-      title: "🎉 Special Moments 🍫",
-      content: "Creating beautiful memories, one smile at a time ✨ Sweet like chocolate, warm like cocoa!",
-      imageSrc: "https://images.unsplash.com/photo-1496247749665-49cf5b1022e9?w=400&h=300&fit=crop&auto=format&q=80"
+      title: "🎀 Sweet Memories",
+      content: "Like scattered photos from our diary 💕",
+      layout: "masonry" as const,
+      imagesPerPage: 6
+    },
+    {
+      title: "💝 Random Love Moments",
+      content: "Spontaneous captures of our happiness 🥰",
+      layout: "scattered" as const,
+      imagesPerPage: 5
+    },
+    {
+      title: "📷 Polaroid Collection",
+      content: "Vintage style memories of us 🤍",
+      layout: "polaroid" as const,
+      imagesPerPage: 4
+    },
+    {
+      title: "💞 Heart Full of You",
+      content: "You are the center of my world 🌍",
+      layout: "heart-shape" as const,
+      imagesPerPage: 7
+    },
+    {
+      title: "🎉 Special Celebrations",
+      content: "Every day with you is a celebration 🎊",
+      layout: "grid-4" as const,
+      imagesPerPage: 4
+    },
+    {
+      title: "🌸 Garden of Memories",
+      content: "Our love grows like beautiful flowers 🌺",
+      layout: "masonry" as const,
+      imagesPerPage: 6
     }
   ];
 
@@ -167,27 +217,28 @@ const BirthdayDiary: React.FC = () => {
             type="greeting"
           />
 
-          {/* Memory Pages */}
-          {memoryPages.map((memory, index) => (
+          {/* Collage Pages with 48 images */}
+          {collagePages.map((collage, index) => (
             <DiaryPage
               key={index + 4}
               pageNumber={index + 4}
-              type="memory"
-              title={memory.title}
-              content={memory.content}
-              imageSrc={memory.imageSrc}
+              type="collage"
+              title={collage.title}
+              content={collage.content}
+              images={getImagesForPage(index, collage.imagesPerPage)}
+              collageLayout={collage.layout}
             />
           ))}
 
           {/* Ending Page */}
           <DiaryPage 
-            pageNumber={7} 
+            pageNumber={12} 
             type="ending"
           />
 
           {/* Final Value Page */}
           <DiaryPage 
-            pageNumber={8} 
+            pageNumber={13} 
             type="value"
             girlfriendName={girlfriendName}
           />
@@ -296,12 +347,12 @@ const BirthdayDiary: React.FC = () => {
         </motion.div>
 
         {/* Subtle page indicator */}
-        <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 flex space-x-2">
-          {[0, 1, 2, 3, 4, 5, 6, 7].map((page) => (
+        <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 flex space-x-1 overflow-x-auto max-w-xs">
+          {Array.from({ length: 14 }, (_, i) => (
             <div
-              key={page}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                currentPage === page ? 'bg-primary shadow-lg' : 'bg-muted'
+              key={i}
+              className={`w-1.5 h-1.5 rounded-full transition-all duration-300 flex-shrink-0 ${
+                currentPage === i ? 'bg-primary shadow-lg scale-125' : 'bg-muted'
               }`}
             />
           ))}
